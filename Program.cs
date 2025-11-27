@@ -24,14 +24,14 @@ if (!string.IsNullOrEmpty(port))
 builder.Services.AddControllers();
 
 // -----------------------
-// SWAGGER + AUTORIZACIÓN
+// SWAGGER + AUTORIZACIÃ“N
 // -----------------------
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Spotify API", Version = "v1" });
 
-    // Para activar el botón "Authorize" en Swagger
+    // Para activar el botÃ³n "Authorize" en Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -138,7 +138,6 @@ builder.Services.AddScoped<ISongService, SongService>();
 builder.Services.AddScoped<IPlaylistSongRepository, PlaylistSongRepository>();
 builder.Services.AddScoped<IPlaylistSongService, PlaylistSongService>();
 
-// entidades
 builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
 builder.Services.AddScoped<IArtistService, ArtistService>();
 
