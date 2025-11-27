@@ -19,7 +19,16 @@ namespace spotify.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlaylistSong>()
-                .HasKey(pls=> new {pls.SongId, pls.PlaylistId});
+                .HasOne(ps => ps.Playlist)
+                .WithMany(p => p.PlaylistSongs)
+                .HasForeignKey(ps => ps.PlaylistId);
+
+            modelBuilder.Entity<PlaylistSong>()
+                .HasOne(ps => ps.Song)
+                .WithMany(s => s.PlaylistSongs)
+                .HasForeignKey(ps => ps.SongId);
+
+
 
         }
     }

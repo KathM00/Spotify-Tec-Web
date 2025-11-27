@@ -138,7 +138,7 @@ builder.Services.AddScoped<ISongService, SongService>();
 builder.Services.AddScoped<IPlaylistSongRepository, PlaylistSongRepository>();
 builder.Services.AddScoped<IPlaylistSongService, PlaylistSongService>();
 
-// Faltan estas, pero las agregarás cuando crees las entidades:
+// entidades
 builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
 builder.Services.AddScoped<IArtistService, ArtistService>();
 
