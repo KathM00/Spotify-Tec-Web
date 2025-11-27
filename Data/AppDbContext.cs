@@ -12,7 +12,14 @@ namespace spotify.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<Song>()
+                .HasOne<Artist>(a=>a.Artist)
+                .WithMany(s=>s.Songs)
+                .HasForeignKey(s=>s.ArtistId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlaylistSong>()
+                .HasKey(pls=> new {pls.SongId, pls.PlaylistId});
 
         }
     }
