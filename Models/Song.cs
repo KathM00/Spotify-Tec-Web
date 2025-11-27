@@ -2,7 +2,7 @@
 {
     public class Song
     {
-        public Guid id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; } =default!;
         public int Duration { get; set; }
         public string Description { get; set; }
