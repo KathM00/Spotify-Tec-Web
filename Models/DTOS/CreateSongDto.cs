@@ -9,5 +9,7 @@ namespace spotify.Models.DTOS
         public string Description { get; set; }
         [Required]
         public int Duration { get; set; }
+        [Required]
+        public Guid ArtistId { get; set; }
     }
 }
