@@ -36,7 +36,7 @@ namespace spotify.Repositories
 
         public async Task<Song?> GetSongByIdAsync(Guid songId)
         {
-            return await _context.Songs.FirstOrDefaultAsync(s => s.id == songId);
+            return await _context.Songs.FirstOrDefaultAsync(s => s.Id == songId);
         }
 
         public async Task<Song> UpdateSongAsync(Song song)
