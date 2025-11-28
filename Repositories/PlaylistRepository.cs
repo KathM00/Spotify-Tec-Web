@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using spotify.Data;
 using spotify.Models;
 
 namespace spotify.Repositories
@@ -13,10 +14,7 @@ namespace spotify.Repositories
 
         public async Task<IEnumerable<Playlist>> GetAll()
         {
-            return await _db.Playlists
-               .Include(p => p.PlaylistSongs)
-               .ThenInclude(ps => ps.Song)
-               .ToListAsync();
+            return await _db.Playlists.ToListAsync();
         }
 
         public async Task<Playlist?> GetOne(Guid id)
