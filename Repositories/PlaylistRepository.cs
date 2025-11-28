@@ -14,12 +14,16 @@ namespace spotify.Repositories
 
         public async Task<IEnumerable<Playlist>> GetAll()
         {
-            return await _db.Playlists.ToListAsync();
+            return await _db.Playlists
+              .Include(p => p.Songs)
+              .ToListAsync();
         }
 
         public async Task<Playlist?> GetOne(Guid id)
         {
-            return await _db.Playlists.FirstOrDefaultAsync(x => x.Id == id);
+           return await _db.Playlists
+                .Include(p => p.Songs)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task AddPlaylist(Playlist playlist)
         {
@@ -39,23 +43,17 @@ namespace spotify.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task AddSongToPlaylist(PlaylistSong playlistSong)
+        public async Task AddSongToPlaylist(Playlist playlist, Song song)
         {
-             await _db.PlaylistSongs.AddAsync(playlistSong);
-             await _db.SaveChangesAsync();
+            playlist.Songs.Add(song);
+            await _db.SaveChangesAsync();
         }
 
-        public async Task RemoveSongFromPlaylist(Guid playlistId, Guid songId)
+        public async Task RemoveSongFromPlaylist(Playlist playlist, Song song)
         {
-             var playlistSong = await _db.PlaylistSongs
-                 .FirstOrDefaultAsync(ps => ps.PlaylistId == playlistId && ps.SongId == songId);
-
-            if (playlistSong != null)
-            {
-                 _db.PlaylistSongs.Remove(playlistSong);
-                 await _db.SaveChangesAsync();
-            }
-        }   
+            playlist.Songs.Remove(song);
+            await _db.SaveChangesAsync();
+        }
     }
 }
 
