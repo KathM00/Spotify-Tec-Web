@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using spotify.Models.DTOS;
 using spotify.Services;
 
@@ -31,6 +32,7 @@ namespace spotify.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateArtist([FromBody] CreateArtistDto artistDto)
         {
             var createdArtist = await _artistService.CreateArtistAsync(artistDto);
@@ -39,6 +41,7 @@ namespace spotify.Controllers
 
         // Endpoint especial para crear el perfil del artista
         [HttpPost("{id}/profile")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateProfile(Guid id, [FromBody] CreateArtistProfileDto profileDto)
         {
             try
