@@ -25,9 +25,9 @@ if (!string.IsNullOrEmpty(port))
 
 // Controllers
 builder.Services.AddControllers()
-    .AddJsonOptions(options => // <-- ¡Aquí se agrega la configuración!
+    .AddJsonOptions(options => 
     {
-        // SOLUCIÓN CLAVE: Ignorar ciclos de referencia entre objetos (Playlist -> Song -> Playlist...)
+       
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 
