@@ -1,6 +1,6 @@
 ﻿namespace spotify.Models.DTOS
 {
-    public class UpdatePlaylistDto
+    public record UpdatePlaylistDto
     {
         public string? Name { get; set; }
         public bool? IsPublic { get; set; }
