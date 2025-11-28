@@ -4,7 +4,7 @@ using spotify.Models.DTOS;
 namespace spotify.Controllers
 {
     [ApiController]
-    [Route("api/v1/[Controller]")]
+    [Route("api/[Controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _service;
@@ -25,6 +25,16 @@ namespace spotify.Controllers
             var (ok, response) = await _service.LoginAsync(dto);
             if (!ok || response is null) return Unauthorized();
             return Ok(response);
+        }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] LogoutDto dto)
+        {
+            var ok = await _service.LogoutAsync(dto);
+
+            if (ok)
+                return Ok(new { message = "Refresh token INVALIDADO y sesion cerrada" });
+            return BadRequest("No se pudo finalizar la sesión");
         }
 
         [HttpPost("refresh")]
