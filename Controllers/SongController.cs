@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using spotify.Models.DTOS;
 using spotify.Services;
 
@@ -15,12 +16,14 @@ namespace spotify.Controllers
         }
 
         [HttpGet]
+
         public async Task<IActionResult> GetAllSongs()
         {
             var songs = await _songService.GetAllSongsAsync();
             return Ok(songs);
         }
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetSongById(Guid id)
         {
             var song = await _songService.GetSongByIdAsync(id);
@@ -29,6 +32,7 @@ namespace spotify.Controllers
             return Ok(song);
         }
         [HttpPost]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> CreateSong([FromBody] CreateSongDto dto)
         {
             if(!ModelState.IsValid)
@@ -39,6 +43,7 @@ namespace spotify.Controllers
             return CreatedAtAction(nameof(GetSongById), new { id = song.Id }, song);
         }
         [HttpPut("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> UpdateSong(Guid id, [FromBody] UpdateSongDto dto)
         {
             if(!ModelState.IsValid)
@@ -49,6 +54,7 @@ namespace spotify.Controllers
             return Ok(song);
         }
         [HttpDelete("{id}")]
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> DeleteSong(Guid id)
         {
             var result = await _songService.DeleteSongAsync(id);
