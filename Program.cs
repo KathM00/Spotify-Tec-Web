@@ -2,13 +2,14 @@ using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Security.Services;
 using spotify.Data;
 using spotify.Repositories;
 using spotify.Services;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.OpenApi.Models;
-using Security.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,12 @@ if (!string.IsNullOrEmpty(port))
 }
 
 // Controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => // <-- ¡Aquí se agrega la configuración!
+    {
+        // SOLUCIÓN CLAVE: Ignorar ciclos de referencia entre objetos (Playlist -> Song -> Playlist...)
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
 // -----------------------
 // SWAGGER + AUTORIZACIÓN
@@ -33,7 +39,6 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Spotify API", Version = "v1" });
 
-    // Para activar el botón "Authorize" en Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
