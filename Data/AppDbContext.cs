@@ -10,7 +10,6 @@ namespace spotify.Data
 
         // Domain sets
         public DbSet<Song> Songs => Set<Song>();
-        public DbSet<PlaylistSong> PlaylistSongs => Set<PlaylistSong>();
         public DbSet<Artist> Artists => Set<Artist>();
         public DbSet<Playlist> Playlists => Set<Playlist>();
         public DbSet<User> Users => Set<User>();
@@ -25,21 +24,7 @@ namespace spotify.Data
                 .HasForeignKey(s => s.ArtistId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // PlaylistSong composite key + relationships
-            modelBuilder.Entity<PlaylistSong>()
-                .HasKey(pls => new { pls.SongId, pls.PlaylistId });
-
-            modelBuilder.Entity<PlaylistSong>()
-                .HasOne(ps => s.Song)
-                .WithMany(s => s.PlaylistSongs)
-                .HasForeignKey(ps => ps.SongId)
-                .OnDelete(DeleteBehavior.Cascade);
-            
-            modelBuilder.Entity<PlaylistSong>()
-                .HasOne(ps => ps.Playlist)
-                .WithMany(p => p.PlaylistSongs)
-                .HasForeignKey(ps => ps.PlaylistId)
-                .OnDelete(DeleteBehavior.Cascade);
+  
 
             base.OnModelCreating(modelBuilder);
         }

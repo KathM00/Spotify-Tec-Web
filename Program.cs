@@ -7,6 +7,7 @@ using spotify.Repositories;
 using spotify.Services;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -135,8 +136,6 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 builder.Services.AddScoped<ISongRepository, SongRepository>();
 builder.Services.AddScoped<ISongService, SongService>();
 
-builder.Services.AddScoped<IPlaylistSongRepository, PlaylistSongRepository>();
-builder.Services.AddScoped<IPlaylistSongService, PlaylistSongService>();
 
 builder.Services.AddScoped<IArtistRepository, ArtistRepository>();
 builder.Services.AddScoped<IArtistService, ArtistService>();
