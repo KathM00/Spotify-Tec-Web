@@ -20,7 +20,7 @@
     container_name: spotify_pg
     restart: unless-stopped
     environment:
-      POSTGRES_DB: spotify_db
+      POSTGRES_DB: spotifydb
       POSTGRES_USER: spotifyuser
       POSTGRES_PASSWORD: supersecret
     ports:
@@ -28,7 +28,7 @@
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U spotifyuser -d spotify_db"]
+      test: ["CMD-SHELL", "pg_isready -U spotifyuser -d spotifydb"]
       interval: 5s
       timeout: 3s 
       retries: 10
