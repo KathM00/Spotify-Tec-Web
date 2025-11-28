@@ -1,4 +1,5 @@
-﻿using spotify.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using spotify.Data;
 using spotify.Models;
 
 namespace spotify.Repositories
