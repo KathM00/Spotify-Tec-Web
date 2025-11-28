@@ -14,6 +14,8 @@ namespace spotify.Data
         public DbSet<Song> Songs { get; set; }
         public DbSet<Artist> Artists { get; set; }
 
+        public DbSet<ArtistProfile> ArtistProfiles => Set<ArtistProfile>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
