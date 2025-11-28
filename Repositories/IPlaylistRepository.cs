@@ -9,7 +9,8 @@ namespace spotify.Repositories
         Task AddPlaylist(Playlist playlist);
         Task UpdatePlaylist(Playlist playlist);
         Task DeletePlaylist(Playlist playlist);
-        Task AddSongToPlaylist(PlaylistSong playlistSong);
-        Task RemoveSongFromPlaylist(Guid playlistId, Guid songId);
+        Task AddSongToPlaylist(Playlist playlist, Song song);
+        Task RemoveSongFromPlaylist(Playlist playlist, Song song);
+
     }
 }
