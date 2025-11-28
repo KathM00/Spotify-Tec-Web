@@ -134,6 +134,8 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 // -----------------------
 // DEPENDENCY INJECTION
 // -----------------------
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddScoped<ISongRepository, SongRepository>();
 builder.Services.AddScoped<ISongService, SongService>();
 
