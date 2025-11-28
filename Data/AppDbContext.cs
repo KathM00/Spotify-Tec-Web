@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using spotify.Models;
 
 namespace spotify.Data
@@ -24,12 +24,7 @@ namespace spotify.Data
                 .HasForeignKey(s => s.ArtistId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            
-            
-
-            
-
-
+  
 
             base.OnModelCreating(modelBuilder);
         }
