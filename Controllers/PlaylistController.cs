@@ -3,35 +3,25 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using spotify.Models;
 using spotify.Models.DTOS;
+using spotify.Services;
 
 namespace spotify.Controllers
 {
     [ApiController]
-    [Route("/api/[controller]")]
+    [Route("api/[controller]")]
     public class PlaylistController : ControllerBase
     {
         private readonly IPlaylistService _service;
-
         public PlaylistController(IPlaylistService service)
         {
             _service = service;
         }
 
-        private Guid GetUserId()
-        {
-            var idClaim = User.FindFirst(JwtRegisteredClaimNames.Sub) ?? User.FindFirst(ClaimTypes.NameIdentifier);
-
-            if (idClaim == null) throw new UnauthorizedAccessException("No ID found");
-
-            return Guid.Parse(idClaim.Value);
-        }
-
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllPlaylists()
         {
-            var userId = GetUserId();
-            IEnumerable<PlaylistResponseDto> items = await _service.GetAll(userId);
+            var items = await _service.GetAll();
             return Ok(items);
         }
 
@@ -40,7 +30,6 @@ namespace spotify.Controllers
         public async Task<IActionResult> GetOne(Guid id)
         {
             var playlist = await _service.GetOne(id);
-            if (playlist == null) return NotFound();
             return Ok(playlist);
         }
 
@@ -49,71 +38,43 @@ namespace spotify.Controllers
         public async Task<IActionResult> CreatePlaylist([FromBody] CreatePlaylistDto dto)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
-
-            var userId = GetUserId();
-            var playlist = await _service.CreatePlaylist(dto, userId);
+            var playlist = await _service.Create(dto);
 
             return CreatedAtAction(nameof(GetOne), new { id = playlist.Id }, playlist);
         }
 
         [HttpPut("{id:guid}")]
         [Authorize]
-        public async Task<IActionResult> UpdatePlaylist([FromBody] UpdatePlaylistDto dto, Guid id)
+        public async Task<IActionResult> UpdatePlaylist(Guid id, [FromBody] UpdatePlaylistDto dto)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            var userId = GetUserId();
-
-            try
-            {
-                var playlist = await _service.UpdatePlaylist(dto, id, userId);
-                return Ok(playlist);
-            }
-            catch (UnauthorizedAccessException) { return Forbid(); }
-            catch (KeyNotFoundException) { return NotFound(); }
+            var playlist = await _service.Update(dto, id);
+            return Ok(playlist);
         }
 
         [HttpDelete("{id:guid}")]
         [Authorize]
         public async Task<IActionResult> DeletePlaylist(Guid id)
         {
-            var userId = GetUserId();
-
-            try
-            {
-                await _service.DeletePlaylist(id, userId);
-                return NoContent();
-            }
-            catch (UnauthorizedAccessException) { return Forbid(); }
-            catch (KeyNotFoundException) { return NotFound(); }
-        }
-        [HttpPost("{id:guid}/songs/{songId:guid}")]
-        [Authorize]
-        public async Task<IActionResult> AddSongToPlaylist(Guid id, Guid songId)
-        {
-            try
-            {
-                var userId = GetUserId();
-                await _service.AddSongToPlaylist(id, songId, userId);
-                return Ok(new { message = "Song added to playlist" });
-            }
-            catch (UnauthorizedAccessException) { return Forbid(); }
-            catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
+            await _service.Delete(id);
+            return NoContent();
         }
 
-        [HttpDelete("{id:guid}/songs/{songId:guid}")]
+        [HttpPost("{id:guid}/songs")]
         [Authorize]
-        public async Task<IActionResult> RemoveSongFromPlaylist(Guid id, Guid songId)
+        public async Task<IActionResult> AddSongToPlaylist(Guid id, [FromBody] AddSongToPlaylistDto dto)
         {
-            try
-            {
-                var userId = GetUserId();
-                await _service.RemoveSongFromPlaylist(id, songId, userId);
-                return NoContent();
-            }
-            catch (UnauthorizedAccessException) { return Forbid(); }
+            await _service.AddSong(id, dto);
+            return Ok(new { message = "Song added to playlist successfully" });
+        }
 
-            catch (KeyNotFoundException ex) { return NotFound(new { message = ex.Message }); }
+        [HttpDelete("{playlistId:guid}/songs/{songId:guid}")]
+        [Authorize]
+        public async Task<IActionResult> RemoveSongFromPlaylist(Guid playlistId, Guid songId)
+        {
+            await _service.RemoveSong(playlistId, songId);
+            return NoContent();
         }
     }
 }
