@@ -6,9 +6,9 @@ namespace spotify.Repositories
     {
         Task<IEnumerable<Playlist>> GetAll();
         Task<Playlist?> GetOne(Guid id);
-        Task Add(Playlist playlist);
-        Task Update(Playlist playlist);
-        Task Delete(Playlist playlist);
+        Task AddPlaylist(Playlist playlist);
+        Task UpdatePlaylist(Playlist playlist);
+        Task DeletePlaylist(Playlist playlist);
         Task AddSongToPlaylist(PlaylistSong playlistSong);
         Task RemoveSongFromPlaylist(Guid playlistId, Guid songId);
     }
