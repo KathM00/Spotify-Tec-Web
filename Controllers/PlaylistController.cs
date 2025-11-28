@@ -63,7 +63,7 @@ namespace spotify.Controllers
 
         [HttpPost("{id:guid}/songs")]
         [Authorize]
-        public async Task<IActionResult> AddSongToPlaylist(Guid id, [FromBody] AddSongToPlaylistDTO dto)
+        public async Task<IActionResult> AddSongToPlaylist(Guid id, [FromBody] AddSongToPlaylist dto)
         { 
             await _service.AddSong(id, dto);
             return Ok(new { message = "Song added to playlist successfully" });

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using spotify.Models.DTOS;
+using spotify.Services;
 
 namespace spotify.Controllers
 {

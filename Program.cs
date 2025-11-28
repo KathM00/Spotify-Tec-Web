@@ -8,6 +8,7 @@ using spotify.Services;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Security.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

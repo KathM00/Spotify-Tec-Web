@@ -10,7 +10,7 @@ namespace spotify.Services
         Task<Playlist> Create(CreatePlaylistDto dto);
         Task<Playlist> Update(UpdatePlaylistDto dto, Guid id);
         Task Delete(Guid id);
-        Task AddSong(Guid playlistId, AddSongToPlaylistDTO dto);
+        Task AddSong(Guid playlistId, AddSongToPlaylist dto);
         Task RemoveSong(Guid playlistId, Guid songId);
     }
 }

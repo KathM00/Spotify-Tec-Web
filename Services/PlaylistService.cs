@@ -71,7 +71,7 @@ namespace spotify.Services
             await _repo.DeletePlaylist(playlist);
         }
 
-        public async Task AddSong(Guid playlistId, AddSongToPlaylistDTO dto)
+        public async Task AddSong(Guid playlistId, AddSongToPlaylist dto)
         {
             var playlist = await _repo.GetOne(playlistId);
             if (playlist == null) throw new Exception("Playlist not found.");
