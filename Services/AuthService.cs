@@ -1,13 +1,13 @@
-﻿using System.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using spotify.Models;
 using spotify.Models.DTOS;
 using spotify.Repositories;
+using spotify.Services;
+
 
 namespace Security.Services
 {
